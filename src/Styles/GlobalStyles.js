@@ -3,7 +3,6 @@ import reset from "styled-reset";
 
 export default createGlobalStyle`
     ${reset};
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,700&display=swap');
     * {
         box-sizing:border-box;
     }
