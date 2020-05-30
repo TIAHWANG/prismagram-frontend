@@ -20,4 +20,7 @@ export default createGlobalStyle`
     input:focus{
         outline:none;
     }
+    textarea{
+        font-family: 'Open Sans', sans-serif;
+    }
 `;

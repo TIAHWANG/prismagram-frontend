@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import useInput from "../../Hooks/useInput";
@@ -16,14 +16,42 @@ const PostContainer = ({ id, user, files, likeCount, isLiked, comments, createdA
     const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, { variables: { postId: id } });
     const [addCommentMutation] = useMutation(ADD_COMMENT, { variables: { postId: id, text: comment.value } });
 
-    useEffect(() => {
-        const totalFiles = files.length;
-        if (currentItem === totalFiles - 1) {
-            setTimeout(() => setCurrentItem(0), 3000);
-        } else {
-            setTimeout(() => setCurrentItem(currentItem + 1), 3000);
+    // Image Slide
+    const totalFiles = files.length;
+    const imageNext = () => {
+        if (currentItem !== totalFiles - 1) {
+            setCurrentItem(currentItem + 1);
         }
-    }, [currentItem, files]);
+    };
+    const imagePrev = () => {
+        if (currentItem !== 0) {
+            setCurrentItem(currentItem - 1);
+        }
+    };
+
+    // TimeStamp
+    const time = (value) => {
+        const today = new Date();
+        const postCreated = new Date(value);
+
+        const diffTime = Math.floor((today.getTime() - postCreated.getTime()) / 1000 / 60);
+        if (diffTime < 1) return "방금 전";
+        if (diffTime < 60) {
+            return `${diffTime}분 전`;
+        }
+
+        const diffHour = Math.floor(diffTime / 60);
+        if (diffHour < 24) {
+            return `${diffHour}시간 전`;
+        }
+
+        const diffDay = Math.floor(diffTime / 60 / 24);
+        if (diffDay < 365) {
+            return `${diffDay}일 전`;
+        }
+
+        return `${Math.floor(diffDay / 365)}년 전`;
+    };
 
     const toggleLike = () => {
         toggleLikeMutation();
@@ -69,6 +97,10 @@ const PostContainer = ({ id, user, files, likeCount, isLiked, comments, createdA
             toggleLike={toggleLike}
             onKeyPress={onKeyPress}
             selfComments={selfComments}
+            imageNext={imageNext}
+            imagePrev={imagePrev}
+            time={time}
+            totalFiles={totalFiles}
         />
     );
 };
