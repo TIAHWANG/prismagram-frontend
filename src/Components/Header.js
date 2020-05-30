@@ -4,8 +4,11 @@ import { Link, withRouter } from "react-router-dom";
 import { gql } from "apollo-boost";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
-import { Compass, HeartEmpty, User, Logo } from "./Icons";
+import logo from "../logo.png";
+import { HomeEmpty, HeartEmpty, CompassEmpty, MessageEmpty, MessageFull, CompassFull, HeartFull, HomeFull } from "./Icons";
+
 import { useQuery } from "react-apollo-hooks";
+import Avatar from "./Avatar";
 
 const Header = styled.header`
     width: 100%;
@@ -19,7 +22,8 @@ const Header = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 25px 0px;
+    height: 54px;
+    padding: 0px 20px;
     z-index: 2;
 `;
 
@@ -28,6 +32,7 @@ const HeaderWrapper = styled.div`
     max-width: ${(props) => props.theme.maxWidth};
     display: flex;
     justify-content: center;
+    align-items: center;
 `;
 
 const HeaderColumn = styled.div`
@@ -46,27 +51,35 @@ const HeaderColumn = styled.div`
 const SearchInput = styled(Input)`
     background-color: ${(props) => props.theme.bgColor};
     padding: 5px;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 3px;
     height: auto;
     text-align: center;
     width: 70%;
     &::placeholder {
         opacity: 0.8;
-        font-weight: 200;
     }
 `;
 
 const HeaderLink = styled(Link)`
     &:not(:last-child) {
-        margin-right: 30px;
+        margin-right: 20px;
     }
+    div {
+        display: inline-block;
+    }
+`;
+
+const Image = styled.img`
+    width: 105px;
+    height: 35px;
 `;
 
 const ME = gql`
     {
         me {
             username
+            avatar
         }
     }
 `;
@@ -81,12 +94,13 @@ export default withRouter(({ history }) => {
         e.preventDefault();
         history.push(`/search?term=${search.value}`);
     };
+
     return (
         <Header>
             <HeaderWrapper>
                 <HeaderColumn>
                     <Link to="/">
-                        <Logo />
+                        <Image src={logo} alt={"logo"} />
                     </Link>
                 </HeaderColumn>
                 <HeaderColumn>
@@ -95,19 +109,49 @@ export default withRouter(({ history }) => {
                     </form>
                 </HeaderColumn>
                 <HeaderColumn>
-                    <HeaderLink to="/explore">
-                        <Compass />
-                    </HeaderLink>
-                    <HeaderLink to="/notifications">
-                        <HeartEmpty />
-                    </HeaderLink>
+                    {history.location.pathname === "/" ? (
+                        <HeaderLink to="/">
+                            <HomeFull />
+                        </HeaderLink>
+                    ) : (
+                        <HeaderLink to="/">
+                            <HomeEmpty />
+                        </HeaderLink>
+                    )}
+                    {history.location.pathname === "/messages" ? (
+                        <HeaderLink to="/messages">
+                            <MessageFull />
+                        </HeaderLink>
+                    ) : (
+                        <HeaderLink to="/messages">
+                            <MessageEmpty />
+                        </HeaderLink>
+                    )}
+                    {history.location.pathname === "/explore" ? (
+                        <HeaderLink to="/explore">
+                            <CompassFull />
+                        </HeaderLink>
+                    ) : (
+                        <HeaderLink to="/explore">
+                            <CompassEmpty />
+                        </HeaderLink>
+                    )}
+                    {history.location.pathname === "/notifications" ? (
+                        <HeaderLink to="/notifications">
+                            <HeartFull />
+                        </HeaderLink>
+                    ) : (
+                        <HeaderLink to="/notifications">
+                            <HeartEmpty />
+                        </HeaderLink>
+                    )}
                     {!data.me ? (
                         <HeaderLink to="/#">
-                            <User />
+                            <Avatar size="sm" url={data.me.avatar} />
                         </HeaderLink>
                     ) : (
                         <HeaderLink to={data.me.username}>
-                            <User />
+                            <Avatar size={"tiny"} url={data.me.avatar} />
                         </HeaderLink>
                     )}
                 </HeaderColumn>

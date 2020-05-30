@@ -10,6 +10,8 @@ const getSize = (size) => {
         number = 50;
     } else if (size === "lg") {
         number = 150;
+    } else if (size === "tiny") {
+        number = 25;
     }
     return `
         width: ${number}px;
@@ -27,7 +29,7 @@ const Container = styled.div`
 const Avatar = ({ size = "sm", url, className }) => <Container className={className} size={size} url={url} />;
 
 Avatar.propTypes = {
-    size: PropTypes.oneOf(["sm", "md", "lg"]),
+    size: PropTypes.oneOf(["sm", "md", "lg", "tiny"]),
     url: PropTypes.string.isRequired,
 };
 
