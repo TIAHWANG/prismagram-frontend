@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
+import logo from "../../logo.png";
+import FatText from "../../Components/FatText";
 
 const Wrapper = styled.div`
     min-height: 80vh;
@@ -47,42 +49,61 @@ const Form = styled(Box)`
     }
 `;
 
+const Image = styled.img`
+    width: 100%;
+    margin-bottom: 35px;
+`;
+
+const Text = styled.p`
+    font-size: 12px;
+    color: ${(props) => props.theme.darkGreyColor};
+    line-height: 16px;
+    margin: 10px 0px;
+    text-align: center;
+`;
+
 export default ({ action, username, firstName, lastName, email, setAction, onSubmit, secret }) => (
     <Wrapper>
         <Form>
             {action === "logIn" && (
                 <>
                     <Helmet>
-                        <title>Log In | Prismagram</title>
+                        <title>로그인| Prismagram</title>
                     </Helmet>
+                    <Image src={logo} alt={"logo"} />
                     <form onSubmit={onSubmit}>
-                        <Input placeholder={"Email"} {...email} type="email" />
-                        <Button text={"Log in"} />
+                        <Input placeholder={"이메일"} {...email} type="email" />
+                        <Button text={"로그인"} />
                     </form>
                 </>
             )}
             {action === "signUp" && (
                 <>
                     <Helmet>
-                        <title>Sign Up | Prismagram</title>
+                        <title>가입하기 | Prismagram</title>
                     </Helmet>
+                    <Image src={logo} alt={"logo"} />
                     <form onSubmit={onSubmit}>
-                        <Input placeholder={"First name"} {...firstName} />
-                        <Input placeholder={"Last name"} {...lastName} />
-                        <Input placeholder={"Email"} {...email} type="email" />
-                        <Input placeholder={"Username"} {...username} />
-                        <Button text={"Sign up"} />
+                        <Input placeholder={"이름"} {...firstName} />
+                        <Input placeholder={"성"} {...lastName} />
+                        <Input placeholder={"이메일"} {...email} type="email" />
+                        <Input placeholder={"사용자 이름"} {...username} />
+                        <Button text={"가입"} />
+                        <Text>
+                            가입하면 Instagram의 <FatText text={"약관, 데이터 정책"} /> 및 <FatText text={"쿠키 정책"} />에 동의하게 됩니다.
+                        </Text>
                     </form>
                 </>
             )}
             {action === "confirm" && (
                 <>
                     <Helmet>
-                        <title>Confirm Secret | Prismagram</title>
+                        <title>로그인 | Prismagram</title>
                     </Helmet>
+                    <Image src={logo} alt={"logo"} />
                     <form onSubmit={onSubmit}>
-                        <Input placeholder="Paste your secret" required {...secret} />
-                        <Button text={"Confirm"} />
+                        <Input placeholder="Secret" required {...secret} />
+                        <Button text={"확인"} />
                     </form>
                 </>
             )}
@@ -91,11 +112,17 @@ export default ({ action, username, firstName, lastName, email, setAction, onSub
             <StateChanger>
                 {action === "logIn" ? (
                     <>
-                        Don't have an account? <Link onClick={() => setAction("signUp")}>Sign up</Link>
+                        계정이 없으신가요?{" "}
+                        <Link onClick={() => setAction("signUp")}>
+                            <FatText text={"가입하기"} />
+                        </Link>
                     </>
                 ) : (
                     <>
-                        Have an account? <Link onClick={() => setAction("logIn")}>Log in</Link>
+                        계정이 있으신가요?{" "}
+                        <Link onClick={() => setAction("logIn")}>
+                            <FatText text={"로그인"} />
+                        </Link>
                     </>
                 )}
             </StateChanger>
