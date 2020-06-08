@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
 import { gql } from "apollo-boost";
+import { useQuery } from "react-apollo-hooks";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import logo from "../logo.png";
 import { HomeEmpty, HeartEmpty, CompassEmpty, MessageEmpty, MessageFull, CompassFull, HeartFull, HomeFull } from "./Icons";
-
-import { useQuery } from "react-apollo-hooks";
 import Avatar from "./Avatar";
 
 const Header = styled.header`
@@ -147,7 +146,7 @@ export default withRouter(({ history }) => {
                     )}
                     {!data.me ? (
                         <HeaderLink to="/#">
-                            <Avatar size="sm" url={data.me.avatar} />
+                            <Avatar size={"sm"} url={data.me.avatar} />
                         </HeaderLink>
                     ) : (
                         <HeaderLink to={data.me.username}>
